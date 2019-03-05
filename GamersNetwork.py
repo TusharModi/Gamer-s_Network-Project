@@ -170,9 +170,8 @@ def add_connection(network, user_A, user_B):
     if user_A not in network or user_B not in network:
         return False
     connectionA = get_connections(network, user_A)
-    for e in connectionA:
-        if e not in get_connections(network, user_B):
-            network[user_B]['connection'].append(e)
+    if user_B not in connectionA:
+            connectionA.append(user_B)
     return network
 
 # ----------------------------------------------------------------------------- 
@@ -338,3 +337,12 @@ print add_new_user(net, "Nick", ["Seven Schemers", "The Movie: The Game"]) # Tru
 print get_secondary_connections(net, "Mercedes")
 print count_common_connections(net, "Mercedes", "John")
 print find_path_to_friend(net, "John", "Ollie")
+
+#>>test case
+network = create_data_structure('')
+network = add_new_user(network, 'Alice', [])
+network = add_new_user(network, 'Bob', ["The Movie: the Game"])
+network = add_connection(network, 'Alice', 'Bob')
+print network
+print get_connections(network, 'Alice')
+#>>Expected output: ['Bob']
