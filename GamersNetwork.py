@@ -93,6 +93,22 @@ Freda likes to play Starfleet Commander, Ninja Hamsters, Seahorse Adventures."
 # Return:
 #   The newly created network data structure
 def create_data_structure(string_input):
+    network = {}
+#    if not string_input:
+#        return None
+    our_string = string_input
+    while our_string:
+        user = our_string[:our_string.find(' ')]
+        line = our_string[:our_string.find('.')]
+        if user not in network:
+            connection_string = line[(line.find('to ')+3):]
+            connection = connection_string.split(', ')
+            network[user] = {'connection': connection}
+        else:
+            like_string = line[(line.find('play ')+5):]
+            likes = like_string.split(', ')
+            network[user]['likes'] = likes
+        our_string = our_string[(our_string.find('.')+1):]
     return network
 
 # ----------------------------------------------------------------------------- # 
