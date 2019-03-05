@@ -283,9 +283,31 @@ def count_common_connections(network, user_A, user_B):
 #   in this procedure to keep track of nodes already visited in your search. You 
 #   may safely add default parameters since all calls used in the grading script 
 #   will only include the arguments network, user_A, and user_B.
-def find_path_to_friend(network, user_A, user_B):
-	# your RECURSIVE solution here!
-	return None
+def find_path_to_friend(network, user_A, user_B, seen = None):
+    if user_A not in network or user_B not in network:
+        return None
+    
+    output = []
+    
+    if seen == None: #only execute 1st time
+        seen = []
+    
+    if user_A in seen:
+        return None
+
+    seen.append(user_A)
+    
+    connectionA = get_connections(network, user_A)
+    if user_B in connectionA:
+        return [user_A, user_B]
+    else:
+        for e in connectionA:
+            result = find_path_to_friend(network, e, user_B, seen)
+            if result:
+                output = [user_A] + result
+    if output:
+        return output
+    return None
 
 # Make-Your-Own-Procedure (MYOP)
 # ----------------------------------------------------------------------------- 
@@ -293,6 +315,14 @@ def find_path_to_friend(network, user_A, user_B):
 # structure (like add_new_user) or it should perform some valuable analysis of 
 # your network (like path_to_friend). Don't forget to comment your MYOP. You 
 # may give this procedure any name you want.
+
+def get_common_games(network, user_A, user_B):
+    output = []
+    if user_A not in network or user_B not in network: return False
+    for game in get_games_liked(network, user_A):
+        if game in get_games_liked(network, user_B):
+            output.append(game)
+    return output
 
 # Replace this with your own procedure! You can also uncomment the lines below
 # to see how your code behaves. Have fun!
@@ -307,4 +337,4 @@ print add_new_user(net, "Debra", [])
 print add_new_user(net, "Nick", ["Seven Schemers", "The Movie: The Game"]) # True
 print get_secondary_connections(net, "Mercedes")
 print count_common_connections(net, "Mercedes", "John")
-#print find_path_to_friend(net, "John", "Ollie")
+print find_path_to_friend(net, "John", "Ollie")
